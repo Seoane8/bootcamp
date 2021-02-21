@@ -1,5 +1,7 @@
 import React, {useState} from 'react'
-import {Person} from "./Person";
+import {PersonForm} from "./PersonForm";
+import {Filter} from "./Filter";
+import {Persons} from "./Persons";
 
 const INITIAL_PERSONS = [
     { name: 'Arto Hellas', tfno: '040-123456' },
@@ -18,68 +20,26 @@ const App = () => {
     const [newPerson, setNewPerson] = useState(INITIAL_NEW_PERSON)
     const [filter, setFilter] = useState('')
 
-    const handleChangeName = (event) =>
-        setNewPerson(prevPerson => ({
-            name: event.target.value,
-            tfno: prevPerson.tfno
-        }))
-
-    const handleChangeTfno = (event) =>
-        setNewPerson(prevPerson => ({
-            name: prevPerson.name,
-            tfno: event.target.value
-        }))
-
-    const handleSubmit = (event) => {
-        event.preventDefault()
-
-        setPersons(prevPersons => {
-            const personsWithSameName = prevPersons.filter(({name}) => name === newPerson.name)
-
-            if (personsWithSameName.length !== 0) {
-                alert(`${newPerson.name} is already added to phonebook`)
-                return [...prevPersons]
-            }
-
-            return [...prevPersons, newPerson]
-        })
-        setNewPerson(INITIAL_NEW_PERSON)
-    }
-
-    const handleFilter = (event) => {
-        setFilter(event.target.value)
-    }
-
 
     return (
         <div>
             <h1>Phonebook</h1>
-            <div>
-                filter shown with: <input type='text' onChange={handleFilter} value={filter}/>
-            </div>
+            <Filter
+                filter={filter}
+                setFilter={setFilter}
+            />
             <h2>Add a new</h2>
-            <form onSubmit={handleSubmit}>
-                <div>
-                    name: <input type='text' onChange={handleChangeName} value={newPerson.name}/>
-                </div>
-                <div>
-                    number: <input type='text' onChange={handleChangeTfno} value={newPerson.tfno}/>
-                </div>
-                <div>
-                    <button type="submit">add</button>
-                </div>
-            </form>
+            <PersonForm
+                newPerson={newPerson}
+                setNewPerson={setNewPerson}
+                setPersons={setPersons}
+                INITIAL_NEW_PERSON={INITIAL_NEW_PERSON}
+            />
             <h2>Numbers</h2>
-            <ul>
-                {persons
-                    .filter( ({name}) =>
-                        name.toLowerCase().includes(filter.toLowerCase())
-                    )
-                    .map( person =>
-                        <Person key={person.name} {...person}/>
-                    )
-                }
-            </ul>
+            <Persons
+                data={persons}
+                filter={filter}
+            />
         </div>
     )
 }
