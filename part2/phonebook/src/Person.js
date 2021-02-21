@@ -1,0 +1,1 @@
+export const Person = ({name}) => <li>{name}</li>
