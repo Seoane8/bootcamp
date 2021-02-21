@@ -1,4 +1,4 @@
-import {postPerson} from "./service";
+import {postPerson, updatePerson} from "./service";
 
 export const PersonForm = ({newPerson, setNewPerson, persons, setPersons, INITIAL_NEW_PERSON}) => {
 
@@ -20,8 +20,7 @@ export const PersonForm = ({newPerson, setNewPerson, persons, setPersons, INITIA
         const personsWithSameName = persons.filter(({name}) => name === newPerson.name)
 
         if (personsWithSameName.length !== 0) {
-            alert(`${newPerson.name} is already added to phonebook`)
-            return
+            return submitAddedPerson(personsWithSameName[0])
         }
 
         postPerson(newPerson).then(
@@ -29,6 +28,27 @@ export const PersonForm = ({newPerson, setNewPerson, persons, setPersons, INITIA
         )
 
         setNewPerson(INITIAL_NEW_PERSON)
+    }
+
+    const submitAddedPerson = ({id}) => {
+        const update = window.confirm(
+            `${newPerson.name} is already added to phonebook, replace the old number with a new one?`
+        )
+
+        if (!update) {
+            return
+        }
+
+        updatePerson(newPerson, id).then(
+            updatedPerson => setPersons(prevPersons =>
+                prevPersons.reduce((newPersons, person) =>
+                    person.id === id ?
+                        [...newPersons, updatedPerson] :
+                        [...newPersons, person],
+                    []
+                )
+            )
+        )
     }
 
     return (

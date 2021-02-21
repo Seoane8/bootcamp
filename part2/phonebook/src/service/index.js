@@ -19,3 +19,9 @@ export const deletePerson = (id) => {
         .delete(`${ENDPOINT}/${id}`)
         .then(response => response.status)
 }
+
+export const updatePerson = (person, id) => {
+    return axios
+        .put(`${ENDPOINT}/${id}`, person)
+        .then(response => response.data)
+}

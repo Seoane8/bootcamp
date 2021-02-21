@@ -27,7 +27,7 @@ export const Persons = ({data, filter, setPersons}) => {
                 )
                 .map(person =>
                     <Person
-                        key={person.name}
+                        key={person.id}
                         person={person}
                         handleDelete={handleDelete}
                     />
