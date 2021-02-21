@@ -1,21 +1,35 @@
 import React, {useState} from 'react'
 import {Person} from "./Person";
 
+const INITIAL_NEW_PERSON = {
+    name: '',
+    tfno: ''
+}
+
 const App = () => {
     const [persons, setPersons] = useState([
-        {name: 'Arto Hellas'}
+        {
+            name: 'Arto Hellas',
+            tfno: '223413598'
+        }
     ])
-    const [newName, setNewName] = useState('')
+    const [newPerson, setNewPerson] = useState(INITIAL_NEW_PERSON)
 
-    const handleChange = (event) =>
-        setNewName(event.target.value)
+    const handleChangeName = (event) =>
+        setNewPerson(prevPerson => ({
+            name: event.target.value,
+            tfno: prevPerson.tfno
+        }))
+
+
+    const handleChangeTfno = (event) =>
+        setNewPerson(prevPerson => ({
+            name: prevPerson.name,
+            tfno: event.target.value
+        }))
 
     const handleSubmit = (event) => {
         event.preventDefault()
-
-        const newPerson = {
-            name: newName
-        }
 
         setPersons(prevPersons => {
             const personsWithSameName = prevPersons.filter(({name}) => name === newPerson.name)
@@ -27,7 +41,7 @@ const App = () => {
 
             return [...prevPersons, newPerson]
         })
-        setNewName('')
+        setNewPerson(INITIAL_NEW_PERSON)
     }
 
 
@@ -36,7 +50,10 @@ const App = () => {
             <h2>Phonebook</h2>
             <form onSubmit={handleSubmit}>
                 <div>
-                    name: <input type='text' onChange={handleChange} value={newName}/>
+                    name: <input type='text' onChange={handleChangeName} value={newPerson.name}/>
+                </div>
+                <div>
+                    number: <input type='text' onChange={handleChangeTfno} value={newPerson.tfno}/>
                 </div>
                 <div>
                     <button type="submit">add</button>
