@@ -1,4 +1,6 @@
-
+import {getWeather} from "./service";
+import {useEffect, useState} from "react";
+import {Weather} from "./Weather";
 
 export const Country = (props) => {
     const {
@@ -8,6 +10,15 @@ export const Country = (props) => {
         languages,
         flag
     } = props
+
+    const [weatherInfo, setWeatherInfo] = useState({})
+
+    useEffect(() => {
+        getWeather(capital).then(data =>
+            setWeatherInfo(data.current)
+        )
+    }, [capital])
+
 
     return (
         <div>
@@ -21,6 +32,10 @@ export const Country = (props) => {
                 )}
             </ul>
             <img src={flag} alt={`Flag of ${name}`}/>
+            {Object.keys(weatherInfo).length !== 0 ?
+                <Weather weatherInfo={weatherInfo} capital={capital}/> :
+                <></>
+            }
         </div>
     )
 }

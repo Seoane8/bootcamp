@@ -8,9 +8,9 @@ export const Countries = ({countriesList, setFilter}) => {
         countriesList.length === 1 ?
             <Country {...countriesList[0]}/> :
             <div>
-                {countriesList.map( ({name}) =>
-                    <div>
-                        <span key={name}>{name}</span>
+                {countriesList.map( ({name, alpha3Code}) =>
+                    <div key={alpha3Code}>
+                        <span>{name}</span>
                         <button onClick={handleClick(name)}>show</button>
                     </div>
                 )}
