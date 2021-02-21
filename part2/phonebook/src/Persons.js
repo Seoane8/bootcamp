@@ -1,6 +1,23 @@
 import {Person} from "./Person";
+import {deletePerson} from "./service";
 
-export const Persons = ({data, filter}) => {
+export const Persons = ({data, filter, setPersons}) => {
+
+    const handleDelete = (id, name) => () => {
+        if (!window.confirm(`Delete ${name}?`)){
+            return
+        }
+
+        deletePerson(id).then(status => {
+            if (status !== 200){
+                return
+            }
+
+            setPersons(prevPersons => prevPersons.filter(
+                person => person.id !== id
+            ))
+        })
+    }
 
     return (
         <ul>
@@ -9,7 +26,11 @@ export const Persons = ({data, filter}) => {
                     name.toLowerCase().includes(filter.toLowerCase())
                 )
                 .map(person =>
-                    <Person key={person.name} {...person}/>
+                    <Person
+                        key={person.name}
+                        person={person}
+                        handleDelete={handleDelete}
+                    />
                 )
             }
         </ul>

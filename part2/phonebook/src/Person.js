@@ -1,6 +1,11 @@
-export const Person = ({name, tfno}) => (
-    <li>
-        <strong>{name} </strong>
-        <span>- {tfno}</span>
-    </li>
-)
+export const Person = ({person, handleDelete}) => {
+    const {name, tfno, id} = person
+
+    return (
+        <li>
+            <strong>{name} </strong>
+            <span>- {tfno}</span>
+            <button onClick={handleDelete(id)}>delete</button>
+        </li>
+    )
+}

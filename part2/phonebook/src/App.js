@@ -41,6 +41,7 @@ const App = () => {
                 <p>Empty list</p> :
                 <Persons
                     data={persons}
+                    setPersons={setPersons}
                     filter={filter}
                 />
             }

@@ -13,3 +13,9 @@ export const postPerson = (person) => {
         .post(ENDPOINT, person)
         .then(response => response.data)
 }
+
+export const deletePerson = (id) => {
+    return axios
+        .delete(`${ENDPOINT}/${id}`)
+        .then(response => response.status)
+}
