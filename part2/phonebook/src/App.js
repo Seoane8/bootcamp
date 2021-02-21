@@ -17,7 +17,16 @@ const App = () => {
             name: newName
         }
 
-        setPersons(prevPersons => [...prevPersons, newPerson])
+        setPersons(prevPersons => {
+            const personsWithSameName = prevPersons.filter(({name}) => name === newPerson.name)
+
+            if (personsWithSameName.length !== 0) {
+                alert(`${newPerson.name} is already added to phonebook`)
+                return [...prevPersons]
+            }
+
+            return [...prevPersons, newPerson]
+        })
         setNewName('')
     }
 
