@@ -3,6 +3,15 @@ import ReactDOM from 'react-dom'
 
 const rootElement = document.getElementById('root')
 
+const Anecdote = ({anecdote, votes}) => {
+    return (
+        <div>
+            <p>{anecdote}</p>
+            <p>Has {votes} votes</p>
+        </div>
+    )
+}
+
 const App = ({anecdotes}) => {
     const initialArray = new Array(anecdotes.length).fill(0)
     const [selected, setSelected] = useState(0)
@@ -19,12 +28,23 @@ const App = ({anecdotes}) => {
         setVotes(newVotes)
     }
 
+    const [maxVotes, maxIdx] = votes.reduce(
+        ([maxVal, maxIdx], val, idx) => val > maxVal ? [val, idx] : [maxVal, maxIdx],
+        [0,-1]
+    )
+
     return (
         <div>
-            <h3>{anecdotes[selected]}</h3>
-            <p>Has {votes[selected]} votes</p>
+            <h2>Anecdote of the day</h2>
+            <Anecdote anecdote={anecdotes[selected]} votes={votes[selected]}/>
             <button onClick={handleVote}>vote</button>
             <button onClick={handleClick}>next anecdote</button>
+            <h2>Anecdote with most votes</h2>
+            { maxIdx === -1 ?
+                <p>No votes yet</p> :
+                <Anecdote anecdote={anecdotes[maxIdx]} votes={maxVotes}/>
+            }
+
         </div>
     )
 }
