@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react'
 import {PersonForm} from "./PersonForm"
 import {Filter} from "./Filter"
 import {Persons} from "./Persons"
-import axios from 'axios'
+import {getPersons} from "./service";
 
 const INITIAL_NEW_PERSON = {
     name: '',
@@ -14,14 +14,9 @@ const App = () => {
     const [newPerson, setNewPerson] = useState(INITIAL_NEW_PERSON)
     const [filter, setFilter] = useState('')
 
-    const getDataFromServer = () => {
-        return axios
-            .get('http://localhost:3001/persons')
-            .then(response => response.data)
-    }
 
     useEffect(() => {
-        getDataFromServer()
+        getPersons()
             .then(persons => setPersons(persons))
     }, [])
 
@@ -37,6 +32,7 @@ const App = () => {
             <PersonForm
                 newPerson={newPerson}
                 setNewPerson={setNewPerson}
+                persons={persons}
                 setPersons={setPersons}
                 INITIAL_NEW_PERSON={INITIAL_NEW_PERSON}
             />
