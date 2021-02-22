@@ -15,3 +15,12 @@ code {
 button {
   margin: 10px;
 }
+
+.notification {
+  color: green;
+  background: lightgray;
+  margin: 0px 10px 20px;
+  padding: 10px;
+  border: solid 1px;
+  border-radius: 5px;
+}

@@ -3,6 +3,7 @@ import {PersonForm} from "./PersonForm"
 import {Filter} from "./Filter"
 import {Persons} from "./Persons"
 import {getPersons} from "./service";
+import {Notification} from "./Notification";
 
 const INITIAL_NEW_PERSON = {
     name: '',
@@ -13,6 +14,7 @@ const App = () => {
     const [persons, setPersons] = useState([])
     const [newPerson, setNewPerson] = useState(INITIAL_NEW_PERSON)
     const [filter, setFilter] = useState('')
+    const [message, setMessage] = useState('')
 
 
     useEffect(() => {
@@ -24,6 +26,7 @@ const App = () => {
     return (
         <div>
             <h1>Phonebook</h1>
+            <Notification message={message}/>
             <Filter
                 filter={filter}
                 setFilter={setFilter}
@@ -34,6 +37,7 @@ const App = () => {
                 setNewPerson={setNewPerson}
                 persons={persons}
                 setPersons={setPersons}
+                setMessage={setMessage}
                 INITIAL_NEW_PERSON={INITIAL_NEW_PERSON}
             />
             <h2>Numbers</h2>

@@ -1,6 +1,6 @@
 import {postPerson, updatePerson} from "./service";
 
-export const PersonForm = ({newPerson, setNewPerson, persons, setPersons, INITIAL_NEW_PERSON}) => {
+export const PersonForm = ({newPerson, setNewPerson, persons, setPersons, setMessage, INITIAL_NEW_PERSON}) => {
 
     const handleChangeName = (event) =>
         setNewPerson(prevPerson => ({
@@ -23,11 +23,16 @@ export const PersonForm = ({newPerson, setNewPerson, persons, setPersons, INITIA
             return submitAddedPerson(personsWithSameName[0])
         }
 
-        postPerson(newPerson).then(
-            person => setPersons(prevPersons => [...prevPersons, person])
-        )
+        postPerson(newPerson).then(person => {
+            setMessage(`Added ${person.name}`)
+            setPersons(prevPersons => [...prevPersons, person])
+        })
 
         setNewPerson(INITIAL_NEW_PERSON)
+        setTimeout(() =>
+            setMessage(''),
+            5000
+        )
     }
 
     const submitAddedPerson = ({id}) => {
@@ -39,8 +44,8 @@ export const PersonForm = ({newPerson, setNewPerson, persons, setPersons, INITIA
             return
         }
 
-        updatePerson(newPerson, id).then(
-            updatedPerson => setPersons(prevPersons =>
+        updatePerson(newPerson, id).then(updatedPerson => {
+            setPersons(prevPersons =>
                 prevPersons.reduce((newPersons, person) =>
                     person.id === id ?
                         [...newPersons, updatedPerson] :
@@ -48,6 +53,13 @@ export const PersonForm = ({newPerson, setNewPerson, persons, setPersons, INITIA
                     []
                 )
             )
+            setMessage(`Updated ${updatedPerson.name}`)
+        })
+
+        setNewPerson(INITIAL_NEW_PERSON)
+        setTimeout(() =>
+                setMessage(''),
+            5000
         )
     }
 
