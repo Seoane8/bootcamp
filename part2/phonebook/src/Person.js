@@ -5,7 +5,7 @@ export const Person = ({person, handleDelete}) => {
         <li>
             <strong>{name} </strong>
             <span>- {tfno}</span>
-            <button onClick={handleDelete(id)}>delete</button>
+            <button onClick={handleDelete(id, name)}>delete</button>
         </li>
     )
 }

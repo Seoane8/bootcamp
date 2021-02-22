@@ -1,6 +1,6 @@
 import {postPerson, updatePerson} from "./service";
 
-export const PersonForm = ({newPerson, setNewPerson, persons, setPersons, setMessage, INITIAL_NEW_PERSON}) => {
+export const PersonForm = ({newPerson, setNewPerson, persons, setPersons, setNotification, INITIAL_NEW_PERSON}) => {
 
     const handleChangeName = (event) =>
         setNewPerson(prevPerson => ({
@@ -24,13 +24,16 @@ export const PersonForm = ({newPerson, setNewPerson, persons, setPersons, setMes
         }
 
         postPerson(newPerson).then(person => {
-            setMessage(`Added ${person.name}`)
+            setNotification({
+                text: `Added ${person.name}`,
+                type: 'message'
+            })
             setPersons(prevPersons => [...prevPersons, person])
         })
 
         setNewPerson(INITIAL_NEW_PERSON)
         setTimeout(() =>
-            setMessage(''),
+            setNotification({text:'', type:''}),
             5000
         )
     }
@@ -44,21 +47,33 @@ export const PersonForm = ({newPerson, setNewPerson, persons, setPersons, setMes
             return
         }
 
-        updatePerson(newPerson, id).then(updatedPerson => {
-            setPersons(prevPersons =>
-                prevPersons.reduce((newPersons, person) =>
-                    person.id === id ?
-                        [...newPersons, updatedPerson] :
-                        [...newPersons, person],
-                    []
+        updatePerson(newPerson, id)
+            .then(updatedPerson => {
+                setPersons(prevPersons =>
+                    prevPersons.map(person =>
+                        person.id === id ? updatedPerson : person,
+                    )
                 )
-            )
-            setMessage(`Updated ${updatedPerson.name}`)
-        })
+                setNotification({
+                    text: `Updated ${updatedPerson.name}`,
+                    type: 'message'
+                })
+            })
+            .catch(error => {
+                setPersons(prevPersons =>
+                    prevPersons.filter(person =>
+                        person.id !== id
+                    )
+                )
+                setNotification({
+                    text: `Information of ${newPerson.name} has already been removed from server`,
+                    type: 'error'
+                })
+            })
 
         setNewPerson(INITIAL_NEW_PERSON)
         setTimeout(() =>
-                setMessage(''),
+            setNotification({text:'', type:''}),
             5000
         )
     }

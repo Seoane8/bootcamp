@@ -14,7 +14,7 @@ const App = () => {
     const [persons, setPersons] = useState([])
     const [newPerson, setNewPerson] = useState(INITIAL_NEW_PERSON)
     const [filter, setFilter] = useState('')
-    const [message, setMessage] = useState('')
+    const [notification, setNotification] = useState({text:'', type:'message'})
 
 
     useEffect(() => {
@@ -26,7 +26,7 @@ const App = () => {
     return (
         <div>
             <h1>Phonebook</h1>
-            <Notification message={message}/>
+            <Notification {...notification}/>
             <Filter
                 filter={filter}
                 setFilter={setFilter}
@@ -37,7 +37,7 @@ const App = () => {
                 setNewPerson={setNewPerson}
                 persons={persons}
                 setPersons={setPersons}
-                setMessage={setMessage}
+                setNotification={setNotification}
                 INITIAL_NEW_PERSON={INITIAL_NEW_PERSON}
             />
             <h2>Numbers</h2>
