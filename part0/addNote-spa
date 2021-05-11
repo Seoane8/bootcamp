@@ -1,0 +1,12 @@
+note over browser:
+write note in text field and
+click the submit button
+end note
+
+browser->server: HTTP POST https://studies.cs.helsinki.fi/exampleapp/new_note_spa {content, date}
+server-->browser: 201 code
+
+note over browser:
+add the note to data.json
+and it is rendered
+end note
